@@ -2,7 +2,7 @@ from math import prod
 from kafka import KafkaProducer
 from constants import BROKER_EP, ENCODING, SUMO_CMD, CAMERA_LOOKUP
 from kafka_helper import sendCamData, sendProbeData, sendLoopData
-from sumo_helper import SUMO_HOME_TOOLS, getCamVehicleIDs
+from sumo_helper import SUMO_HOME_TOOLS
 import traci
 
 SUMO_HOME_TOOLS()
@@ -16,7 +16,7 @@ while True:
         traci.start(SUMO_CMD)
         print("M50 Camera locations")
         for cam in CAMERA_LOOKUP:
-            print(cam, CAMERA_LOOKUP[cam])
+            print(cam, CAMERA_LOOKUP[cam]["coordinates"])
             
         step = 0
         IDsOfEdges=traci.edge.getIDList()      
