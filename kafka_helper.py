@@ -1,5 +1,6 @@
-from sumo_helper import getProbeData, getLoopData, getProbeVehicleIDs, getCamVehicleIDs, getCamData
+from sumo_helper import getProbeData, getLoopData, getProbeVehicleIDs, getCamVehicleIDs, getCamData, getTollData, getTollVehicleIDs, getTollData
 from constants import TOPIC_LOOKUP, CAMERA_LOOKUP
+import traci
 
 def sendProbeData(vehicleIDs, producer):
     probes = getProbeVehicleIDs(vehicleIDs)
@@ -18,3 +19,11 @@ def sendCamData(vehicleIDs, producer):
         for vehID in camVehicles:
             data = getCamData(vehID, cam)
             producer.send(TOPIC_LOOKUP["cameras"], data)
+
+def sendTollData(vehicleIDs, producer):
+    x, y = traci.simulation.convertGeo(float("-6.3829509"), float("53.3617409"), fromGeo=True)
+    p1 = [x, y]
+    tollVehicles = getTollVehicleIDs(vehicleIDs, p1)
+    for vehID in tollVehicles:
+        data = getTollData(vehID, p1)
+        producer.send(TOPIC_LOOKUP["toll"], data)

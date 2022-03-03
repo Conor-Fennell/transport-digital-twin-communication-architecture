@@ -1,11 +1,14 @@
 import json, pathlib
 
 #KAFKA
-BROKER_EP = "34.244.87.234:9092" 
+BROKER_EP = "52.18.197.46:9092" 
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
 DECODING = (lambda v: json.loads(v))
 TOPICS = ["inductive_loops", "probe_vehicles","motorway_cameras"]
-TOPIC_LOOKUP = { "loops":"inductive_loops", "probes":"probe_vehicles", "cameras":"motorway_cameras"}
+TOPIC_LOOKUP = { "loops":"inductive_loops", 
+                "probes":"probe_vehicles", 
+                "cameras":"motorway_cameras",
+                "toll":"toll_bridge_cameras"}
 
 #SUMO
 pathToConfigs = '\ITSC2020_CAV_impact\ITSC2020_CAV_impact\workspace'
@@ -66,7 +69,11 @@ CAMERA_LOOKUP = {"M50(S) After J9 (N7)":
                 }
 }
 
-TOLL_LOCATION = "53.3617409,-6.3829509"
+TOLL_BRIDGE = {
+    "coordinates": "53.3617409,-6.3829509" ,
+    "northEdges": "4414080#1-AddedOnRampEdge.343",
+    "southEdges": "106130759.2098", 
+}
 
 
 

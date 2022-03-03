@@ -1,7 +1,7 @@
 from math import prod
 from kafka import KafkaProducer
 from constants import BROKER_EP, ENCODING, SUMO_CMD, CAMERA_LOOKUP
-from kafka_helper import sendCamData, sendProbeData, sendLoopData
+from kafka_helper import sendCamData, sendProbeData, sendLoopData, sendTollData
 from sumo_helper import SUMO_HOME_TOOLS
 import traci
 
@@ -29,11 +29,13 @@ while True:
             
             sendCamData(vehIDs, producer) 
             sendProbeData(vehIDs, producer)
+            sendTollData(vehIDs, producer)
             sendLoopData(IDsOfLoops, producer)
 
         traci.close()
         
-#implement toll bridge data collection
 #implement 2nd kafka server to act as enterprise servers: 
 # #traci -> enterprise producer -> enterprise broker -> our enterprise conssumer -> regular producer...
 #the data should be produced here, then consumer is here, then to our producer here to our kafka broker
+
+#create partitions among the topics

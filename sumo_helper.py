@@ -1,5 +1,6 @@
+from ast import Pass
 import os, sys, traci, datetime, random
-from constants import CAMERA_LOOKUP, passengerVehicleTypes, truckVehicleTypes
+from constants import CAMERA_LOOKUP, TOLL_BRIDGE, passengerVehicleTypes, truckVehicleTypes
 
 def mpsToKph(speed):
     return (speed*3600)/1000
@@ -98,7 +99,30 @@ def getProbeData(vehID):
     }
     return data
 
-def getTollData():
-    pass
+def getTollVehicleIDs(vehicleIDs, p1):
+    return getVehiclesInViewToll(vehicleIDs, 100, p1)
+
+def getVehiclesInViewToll(vehicleIDs, r, p1):
+    vehicles = [] 
+    for vehID in vehicleIDs:
+        x, y = traci.vehicle.getPosition(vehID)
+        p2 = [x, y]
+        if calcDistance(p1, p2) < r and getDirection(vehID, TOLL_BRIDGE):   
+                vehicles.append(vehID)
+    return vehicles
+
+def getTollData(vehID, p1):
+    x, y = traci.vehicle.getPosition(vehID)
+    p2 = [x, y]
+    data = {
+        'lane_id': str(traci.vehicle.getRoadID(vehID)),
+        'lane_index': str(traci.vehicle.getLaneIndex(vehID)),
+        'direction': str(getDirection(vehID, TOLL_BRIDGE)),
+        'distance': str(calcDistance(p1, p2)),
+        'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
+        'class': str(traci.vehicle.getVehicleClass(vehID)),
+        'timestamp': str(datetime.datetime.now())
+    }
+    return data
 
  
