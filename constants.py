@@ -1,14 +1,17 @@
 import json, pathlib
 
 #KAFKA
-BROKER_EP = "52.18.197.46:9092" 
+PORT = '9092'
+BROKER_EP = '34.245.27.64:'+PORT 
+ENTERPRISE_EP = '3.249.226.122:'+PORT
+
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
 DECODING = (lambda v: json.loads(v))
-TOPICS = ["inductive_loops", "probe_vehicles","motorway_cameras"]
-TOPIC_LOOKUP = { "loops":"inductive_loops", 
-                "probes":"probe_vehicles", 
-                "cameras":"motorway_cameras",
-                "toll":"toll_bridge_cameras"}
+TOPICS = ["inductive_loops","probe_vehicles","toll_bridge_cameras","motorway_cameras"]
+ENTERPRISE_TOPICS = ["enterprise_probe_vehicles","enterprise_motorway_cameras","enterprise_toll_bridge_cameras"]
+TOPIC_LOOKUP = { "enterprise_probe_vehicles":"probe_vehicles", 
+                "enterprise_motorway_cameras":"motorway_cameras",
+                "enterprise_toll_bridge_cameras":"toll_bridge_cameras"}
 
 #SUMO
 pathToConfigs = '\ITSC2020_CAV_impact\ITSC2020_CAV_impact\workspace'

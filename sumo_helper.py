@@ -67,7 +67,6 @@ def getCamData(vehID, camera_id):
         'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
         'timestamp': str(datetime.datetime.now())
     }
-    print(data)
     return data
 
 def getLoopData(loopID):
@@ -124,5 +123,7 @@ def getTollData(vehID, p1):
         'timestamp': str(datetime.datetime.now())
     }
     return data
+
+
 
  
