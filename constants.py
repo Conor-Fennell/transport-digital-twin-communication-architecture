@@ -2,8 +2,8 @@ import json, pathlib
 
 #KAFKA
 PORT = '9092'
-BROKER_EP = '34.245.27.64:'+PORT 
-ENTERPRISE_EP = '3.249.226.122:'+PORT
+BROKER_EP = '18.203.222.104:'+PORT 
+ENTERPRISE_EP = '34.243.204.178:'+PORT
 
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
 DECODING = (lambda v: json.loads(v))
@@ -16,10 +16,11 @@ TOPIC_LOOKUP = { "enterprise_probe_vehicles":"probe_vehicles",
 #SUMO
 pathToConfigs = '\ITSC2020_CAV_impact\ITSC2020_CAV_impact\workspace'
 currentPath = str(pathlib.Path().resolve())
-sumoBinary = "sumo"
+sumoBinary = "sumo-gui"
 SUMO_CMD = [sumoBinary, "-c", currentPath+pathToConfigs+"\M50_simulation.sumo.cfg"]
 truckVehicleTypes = ["CAT4", "CAT2", "HDT"]
 passengerVehicleTypes = ["CAV4", "CAV2", "HDC"]
+autonomousVehicles = ["CAV4", "CAV2", "CAT4", "CAT2"] #equates to 20% of vehicles
 
 #Camera locations represent real cameras located on M50 ref: https://traffic.tii.ie/
 CAMERA_LOOKUP = {"M50(S) After J9 (N7)": 

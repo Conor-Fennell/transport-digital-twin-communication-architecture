@@ -1,5 +1,5 @@
 from kafka import KafkaConsumer
-from constants import DECODING, TOPICS, BROKER_EP, ENTERPRISE_EP
+from constants import DECODING, TOPICS, BROKER_EP
 import file_tools as file
 from multiprocessing import Process
 
@@ -12,9 +12,7 @@ def consume(EP):
 
 if __name__ == '__main__':
      print("Starting consumer...") 
-
      Process(target=consume, args=(BROKER_EP,)).start()
-     Process(target=consume, args=(ENTERPRISE_EP,)).start()
     
 
      

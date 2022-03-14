@@ -1,12 +1,12 @@
 from ast import Pass
-import os, sys, traci, datetime, random
-from constants import CAMERA_LOOKUP, TOLL_BRIDGE, passengerVehicleTypes, truckVehicleTypes
+import os, sys, traci, datetime
+from constants import CAMERA_LOOKUP, TOLL_BRIDGE, autonomousVehicles
+
+def getTimeStamp(date, time):
+    return str(date)+' '+str(datetime.timedelta(seconds=time))
 
 def mpsToKph(speed):
     return (speed*3600)/1000
-
-def probeVehicleProbability(p):
-    return random.random() < p
 
 def SUMO_HOME_TOOLS():
     if 'SUMO_HOME' in os.environ:
@@ -68,33 +68,30 @@ def getCamData(vehID, camera_id):
         'timestamp': str(datetime.datetime.now())
     }
     return data
-
-def getLoopData(loopID):
+ 
+def getLoopData(loopID, timestamp):
     data = { 
         'loop_id': str(loopID),
         'lane': traci.inductionloop.getLaneID(loopID),
         'count': str(traci.inductionloop.getLastStepVehicleNumber(loopID)),
-        'timestamp': str(datetime.datetime.now())
+        'timestamp': str(timestamp)
     }
     return data
 
 def getProbeVehicleIDs(IDsOfVehicles):
     probes = []
     for vehID in IDsOfVehicles:      
-        if traci.vehicle.getTypeID(vehID) in passengerVehicleTypes:
-            if probeVehicleProbability(0.1):
-                probes.append(vehID)
-        else:
-            if probeVehicleProbability(0.2):
-                probes.append(vehID) 
+        if traci.vehicle.getTypeID(vehID) in autonomousVehicles:
+            probes.append(vehID)
     return probes
 
-def getProbeData(vehID):
+def getProbeData(vehID, timestamp):
     data = {
         'probe_id': str(vehID),
         'location': str(getVehicleLocationGeo(vehID)),
         'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
-        'timestamp': str(datetime.datetime.now())
+        'vehcile type': traci.vehicle.getTypeID(vehID),
+        'timestamp': str(timestamp)
     }
     return data
 
@@ -110,7 +107,7 @@ def getVehiclesInViewToll(vehicleIDs, r, p1):
                 vehicles.append(vehID)
     return vehicles
 
-def getTollData(vehID, p1):
+def getTollData(vehID, p1, timestamp):
     x, y = traci.vehicle.getPosition(vehID)
     p2 = [x, y]
     data = {
@@ -120,7 +117,7 @@ def getTollData(vehID, p1):
         'distance': str(calcDistance(p1, p2)),
         'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
         'class': str(traci.vehicle.getVehicleClass(vehID)),
-        'timestamp': str(datetime.datetime.now())
+        'timestamp': str(timestamp)
     }
     return data
 
