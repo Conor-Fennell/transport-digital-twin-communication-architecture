@@ -7,12 +7,13 @@ def consume(EP):
      consumer = KafkaConsumer(bootstrap_servers=EP, value_deserializer=DECODING)
      consumer.subscribe(topics=TOPICS)
      for msg in consumer:
-          print (msg)
+          print (msg.value)
           file.writeMessageToFile(msg.partition, msg.topic, msg.value)
 
 if __name__ == '__main__':
      print("Starting consumer...") 
      Process(target=consume, args=(BROKER_EP,)).start()
+  
     
 
      

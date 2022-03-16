@@ -52,7 +52,7 @@ def getVehiclesInView(vehicleIDs, cam, r, dir):
 def getCamVehicleIDs(camera_id, vehicleIDs):
     return getVehiclesInView(vehicleIDs, CAMERA_LOOKUP[camera_id], 150, camera_id[4])
 
-def getCamData(vehID, camera_id):
+def getCamData(vehID, camera_id, timestamp):
     lon, lat = CAMERA_LOOKUP[camera_id]["coordinates"].split(",")
     x, y = traci.simulation.convertGeo(float(lat), float(lon), fromGeo=True)
     p1 = [x, y]
@@ -65,15 +65,17 @@ def getCamData(vehID, camera_id):
         'direction': str(getDirection(vehID, CAMERA_LOOKUP[camera_id])),
         'distance': str(calcDistance(p1, p2)),
         'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
-        'timestamp': str(datetime.datetime.now())
+        'timestamp': str(timestamp)
     }
     return data
  
 def getLoopData(loopID, timestamp):
     data = { 
-        'loop_id': str(loopID),
-        'lane': traci.inductionloop.getLaneID(loopID),
-        'count': str(traci.inductionloop.getLastStepVehicleNumber(loopID)),
+        'loop_id': str(loopID[0][:-2]),
+        'lane 1': str(traci.inductionloop.getLastStepVehicleNumber(loopID[0])),
+        'lane 2': str(traci.inductionloop.getLastStepVehicleNumber(loopID[1])),
+        'lane 3': str(traci.inductionloop.getLastStepVehicleNumber(loopID[2])),
+        'lane 4': str(traci.inductionloop.getLastStepVehicleNumber(loopID[3])),
         'timestamp': str(timestamp)
     }
     return data

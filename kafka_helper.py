@@ -11,6 +11,7 @@ def sendProbeData(vehicleIDs, producer, timestamp, topic):
 def sendLoopData(IDsOfLoops, producer,timestamp, topic):
     for loopID in IDsOfLoops:
         data = getLoopData(loopID, timestamp)
+        print(data)
         producer.send(topic, data) 
 
 def sendCamData(vehicleIDs, producer, timestamp, topic):

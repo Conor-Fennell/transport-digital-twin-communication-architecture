@@ -2,8 +2,8 @@ import json, pathlib
 
 #KAFKA
 PORT = '9092'
-BROKER_EP = '18.203.222.104:'+PORT 
-ENTERPRISE_EP = '34.243.204.178:'+PORT
+BROKER_EP = '34.244.145.59:'+PORT 
+ENTERPRISE_EP = '54.216.104.136:'+PORT
 
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
 DECODING = (lambda v: json.loads(v))
@@ -79,6 +79,18 @@ TOLL_BRIDGE = {
     "southEdges": "106130759.2098", 
 }
 
+M50_Northbound = [
+        "M50_Northbound-1", 
+        "M50_Northbound-2", 
+        "M50_Northbound-3", 
+        "M50_Northbound-4"
+        ]
 
+M50_Southbound = [
+        "M50_Southbound-1", 
+        "M50_Southbound-2", 
+        "M50_Southbound-3", 
+        "M50_Southbound-4"
+        ]
 
-
+LOOPS = [M50_Northbound, M50_Southbound]
