@@ -2,8 +2,8 @@ import json, pathlib
 
 #KAFKA
 PORT = '9092'
-BROKER_EP = '34.244.145.59:'+PORT 
-ENTERPRISE_EP = '54.216.104.136:'+PORT
+BROKER_EP = '176.34.157.185:'+PORT 
+ENTERPRISE_EP = '3.250.74.186:'+PORT
 
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
 DECODING = (lambda v: json.loads(v))

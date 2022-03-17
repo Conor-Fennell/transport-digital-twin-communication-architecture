@@ -69,16 +69,22 @@ def getCamData(vehID, camera_id, timestamp):
     }
     return data
  
-def getLoopData(loopID, timestamp):
+def getLoopData(loopID, timestamp, counts):
     data = { 
         'loop_id': str(loopID[0][:-2]),
-        'lane 1': str(traci.inductionloop.getLastStepVehicleNumber(loopID[0])),
-        'lane 2': str(traci.inductionloop.getLastStepVehicleNumber(loopID[1])),
-        'lane 3': str(traci.inductionloop.getLastStepVehicleNumber(loopID[2])),
-        'lane 4': str(traci.inductionloop.getLastStepVehicleNumber(loopID[3])),
+        'lane 1': str(counts[0]),
+        'lane 2': str(counts[1]),
+        'lane 3': str(counts[2]),
+        'lane 4': str(counts[3]),
         'timestamp': str(timestamp)
     }
     return data
+
+def getLoopLaneCounts(loopID):
+    counts = []
+    for i in range(4):
+        counts.append(traci.inductionloop.getLastStepVehicleNumber(loopID[i]))
+    return counts
 
 def getProbeVehicleIDs(IDsOfVehicles):
     probes = []

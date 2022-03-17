@@ -1,6 +1,7 @@
-from sumo_helper import getProbeData, getLoopData, getProbeVehicleIDs, getCamVehicleIDs, getCamData, getTollData, getTollVehicleIDs, getTollData
+from sumo_helper import getLoopLaneCounts, getProbeData, getLoopData, getProbeVehicleIDs, getCamVehicleIDs, getCamData, getTollData, getTollVehicleIDs, getTollData
 from constants import CAMERA_LOOKUP
 import traci, random, time
+import numpy as np
 
 def sendProbeData(vehicleIDs, producer, timestamp, topic):
     probes = getProbeVehicleIDs(vehicleIDs)
@@ -8,11 +9,8 @@ def sendProbeData(vehicleIDs, producer, timestamp, topic):
         data = getProbeData(vehID, timestamp)  
         producer.send(topic, data) 
 
-def sendLoopData(IDsOfLoops, producer,timestamp, topic):
-    for loopID in IDsOfLoops:
-        data = getLoopData(loopID, timestamp)
-        print(data)
-        producer.send(topic, data) 
+def appendLoopCount(loopID, currentCount):
+    return np.add(currentCount, getLoopLaneCounts(loopID))
 
 def sendCamData(vehicleIDs, producer, timestamp, topic):
     for cam in CAMERA_LOOKUP:
