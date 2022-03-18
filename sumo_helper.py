@@ -1,4 +1,3 @@
-from ast import Pass
 import os, sys, traci, datetime
 from constants import CAMERA_LOOKUP, TOLL_BRIDGE, autonomousVehicles
 
@@ -128,6 +127,9 @@ def getTollData(vehID, p1, timestamp):
         'timestamp': str(timestamp)
     }
     return data
+
+def gps_noise():
+    pass
 
 
 

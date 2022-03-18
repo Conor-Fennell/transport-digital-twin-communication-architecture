@@ -1,7 +1,20 @@
 from sumo_helper import getLoopLaneCounts, getProbeData, getLoopData, getProbeVehicleIDs, getCamVehicleIDs, getCamData, getTollData, getTollVehicleIDs, getTollData
 from constants import CAMERA_LOOKUP
+from kafka import KafkaAdminClient
+from kafka.admin import NewPartitions
 import traci, random, time
 import numpy as np
+
+def getPartition(msg):
+    if msg.topic == 'enterprise_motorway_cameras':
+        return CAMERA_LOOKUP[msg.value['camera_id']]["partition"]
+    return None
+
+def createNewPartitions(SERVER, TOPIC, PARTITIONS):
+    admin_client = KafkaAdminClient(bootstrap_servers=SERVER)
+    topic_partitions = {}
+    topic_partitions[TOPIC] = NewPartitions(total_count=PARTITIONS)
+    admin_client.create_partitions(topic_partitions)
 
 def sendProbeData(vehicleIDs, producer, timestamp, topic):
     probes = getProbeVehicleIDs(vehicleIDs)
@@ -32,6 +45,6 @@ def sendTollData(vehicleIDs, producer, timestamp, topic):
     for vehID in tollVehicles:
         data = getTollData(vehID, p1, timestamp)
         producer.send(topic, data)
-        
-def sendData(data, producer, topic):
-    producer.send(topic, data)
+
+def sendData(data, producer, topic, partition):
+    producer.send(topic=topic, value=data, partition=partition)
