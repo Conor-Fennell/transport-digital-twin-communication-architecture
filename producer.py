@@ -1,6 +1,6 @@
 from kafka import KafkaProducer
 from constants import BROKER_EP, ENTERPRISE_EP, ENCODING, SUMO_CMD, M50_Northbound, M50_Southbound, NB_PARTITION, SB_PARTITION
-from kafka_helper import sendCamData, sendProbeData, getLoopData, sendTollData, sendData, appendLoopCount, createNewPartitions
+from kafka_helper import sendCamData, sendProbeData, getLoopData, sendTollData, sendData, appendLoopCount, initTopics
 from sumo_helper import SUMO_HOME_TOOLS, getTimeStamp
 from datetime import date
 import traci
@@ -11,12 +11,12 @@ print("Starting producer...")
 producer = KafkaProducer(bootstrap_servers=BROKER_EP, value_serializer=ENCODING)
 print("Connecting to broker at:", BROKER_EP)
 
-createNewPartitions(BROKER_EP, "motorway_cameras", 8)
-
 print("Starting enterprise producer...")
 enterprise_producer = KafkaProducer(bootstrap_servers=ENTERPRISE_EP, value_serializer=ENCODING)
 print("Connecting to enterprise broker at:", ENTERPRISE_EP)
 date = date.today()
+
+initTopics()
 
 while True:
         print("Starting simulation...")

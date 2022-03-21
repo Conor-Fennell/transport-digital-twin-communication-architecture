@@ -2,8 +2,8 @@ import json, pathlib
 
 #KAFKA
 PORT = '9092'
-BROKER_EP = '34.243.250.18:'+PORT 
-ENTERPRISE_EP = '54.78.58.26:'+PORT
+BROKER_EP = '54.216.122.167:'+PORT 
+ENTERPRISE_EP = '3.249.12.140:'+PORT
 
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
 DECODING = (lambda v: json.loads(v))
@@ -12,9 +12,9 @@ ENTERPRISE_TOPICS = ["enterprise_probe_vehicles","enterprise_motorway_cameras","
 TOPIC_LOOKUP = { "enterprise_probe_vehicles":"probe_vehicles", 
                 "enterprise_motorway_cameras":"motorway_cameras",
                 "enterprise_toll_bridge_cameras":"toll_bridge_cameras"}
-M50_SOUTHBOUND_PATH = r'consumed_topics\inductive_loops\1.txt'
 M50_NORTHBOUND_PATH = r'consumed_topics\inductive_loops\0.txt'
 NB_PARTITION = int(0)
+M50_SOUTHBOUND_PATH = r'consumed_topics\inductive_loops\1.txt'
 SB_PARTITION = int(1)
 
 #SUMO

@@ -1,10 +1,50 @@
 from sumo_helper import getLoopLaneCounts, getProbeData, getLoopData, getProbeVehicleIDs, getCamVehicleIDs, getCamData, getTollData, getTollVehicleIDs, getTollData
-from constants import CAMERA_LOOKUP
-from kafka import KafkaAdminClient
-from kafka.admin import NewPartitions
+from constants import CAMERA_LOOKUP, BROKER_EP, ENTERPRISE_EP, TOPICS, ENTERPRISE_TOPICS
+from kafka import KafkaAdminClient, KafkaConsumer
+from kafka.admin import NewPartitions, NewTopic
 import traci, random, time
 import numpy as np
 
+def createTopics(TOPICS, broker):
+    admin_client = KafkaAdminClient(bootstrap_servers=broker)
+    admin_client.create_topics(new_topics=TOPICS, validate_only=False)
+    print("Created topics in ", broker, " -> ", TOPICS)
+
+def appendTopics(topics, numPartitions, topic_name):
+    topics.append(NewTopic(name=topic_name, num_partitions=numPartitions, replication_factor=1))
+    return topics
+
+def delete_topics(topics, broker):
+    admin_client = KafkaAdminClient(bootstrap_servers=broker)
+    try:
+        admin_client.delete_topics(topics=topics)
+    except  Exception as e:
+        print(e)
+
+def initTopics():
+
+    for topic in list(KafkaConsumer(bootstrap_servers=BROKER_EP).topics()):
+        delete_topics([topic], BROKER_EP)
+
+    for topic in list(KafkaConsumer(bootstrap_servers=ENTERPRISE_EP).topics()):
+        delete_topics([topic], ENTERPRISE_EP)
+
+    topics = []
+    enterprise_topics = []
+
+    topics = appendTopics(topics, 2, "inductive_loops")
+    topics = appendTopics(topics, 8, "motorway_cameras")
+    topics = appendTopics(topics, 1, "toll_bridge_cameras")
+    topics = appendTopics(topics, 1, "probe_vehicles")  
+
+    for topic in ENTERPRISE_TOPICS:
+        enterprise_topics = appendTopics(enterprise_topics, 1, topic)
+
+    createTopics(topics, BROKER_EP)     
+    createTopics(enterprise_topics, ENTERPRISE_EP)
+        
+
+    
 def getPartition(msg):
     if msg.topic == 'enterprise_motorway_cameras':
         return CAMERA_LOOKUP[msg.value['camera_id']]["partition"]
