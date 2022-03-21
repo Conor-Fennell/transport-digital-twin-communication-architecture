@@ -48,6 +48,5 @@ while True:
         traci.close()
 
 #toDo
-#add data noise, add time compilations of data 
 #latency measurements, diff placement of brokers, latency measurements of stuff
 #estimate added latency of camera video processing

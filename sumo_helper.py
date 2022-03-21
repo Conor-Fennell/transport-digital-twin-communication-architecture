@@ -1,11 +1,29 @@
-import os, sys, traci, datetime
+import os, sys, traci, datetime, random, math
 from constants import CAMERA_LOOKUP, TOLL_BRIDGE, autonomousVehicles
+
+def addDistanceNoise(p1, p2):
+    d = calcDistance(p1, p2)
+    return random.uniform(0.95*d, 1.05*d)
+
+def addGeoDistanceNoise(coordinates):
+    lon = coordinates[0]
+    lat = coordinates[1]
+    r  = 10/111300 #converts 10 metres into degrees
+    w = r * math.sqrt(random.uniform(0, 1))
+    t = 2 * math.pi * (random.uniform(0, 1))
+    x = w * math.cos(t) 
+    lon_e = x/math.cos(lat)
+    lat_e = w * math.sin(t)
+    return lon+lon_e, lat+lat_e
 
 def getTimeStamp(date, time):
     return str(date)+' '+str(datetime.timedelta(seconds=time))
 
 def mpsToKph(speed):
     return (speed*3600)/1000
+
+def addSpeedNoise(speed):
+    return random.uniform(0.95*speed, 1.05*speed)
 
 def SUMO_HOME_TOOLS():
     if 'SUMO_HOME' in os.environ:
@@ -62,8 +80,8 @@ def getCamData(vehID, camera_id, timestamp):
         'lane_id': str(traci.vehicle.getRoadID(vehID)),
         'lane_index': str(traci.vehicle.getLaneIndex(vehID)),
         'direction': str(getDirection(vehID, CAMERA_LOOKUP[camera_id])),
-        'distance': str(calcDistance(p1, p2)),
-        'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
+        'distance': str(addDistanceNoise(p1, p2)),
+        'speed': str(round(addSpeedNoise(mpsToKph(traci.vehicle.getSpeed(vehID))), 2)),
         'timestamp': str(timestamp)
     }
     return data
@@ -95,8 +113,8 @@ def getProbeVehicleIDs(IDsOfVehicles):
 def getProbeData(vehID, timestamp):
     data = {
         'probe_id': str(vehID),
-        'location': str(getVehicleLocationGeo(vehID)),
-        'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
+        'location': str(addGeoDistanceNoise(getVehicleLocationGeo(vehID))),
+        'speed': str(round(addSpeedNoise(mpsToKph(traci.vehicle.getSpeed(vehID))), 2)),
         'vehcile type': traci.vehicle.getTypeID(vehID),
         'timestamp': str(timestamp)
     }
@@ -121,15 +139,12 @@ def getTollData(vehID, p1, timestamp):
         'lane_id': str(traci.vehicle.getRoadID(vehID)),
         'lane_index': str(traci.vehicle.getLaneIndex(vehID)),
         'direction': str(getDirection(vehID, TOLL_BRIDGE)),
-        'distance': str(calcDistance(p1, p2)),
-        'speed': str(round(mpsToKph(traci.vehicle.getSpeed(vehID)), 2)),
+        'distance': str(addDistanceNoise(p1, p2)),
+        'speed': str(round(addSpeedNoise(mpsToKph(traci.vehicle.getSpeed(vehID))), 2)),
         'class': str(traci.vehicle.getVehicleClass(vehID)),
         'timestamp': str(timestamp)
     }
     return data
-
-def gps_noise():
-    pass
 
 
 
