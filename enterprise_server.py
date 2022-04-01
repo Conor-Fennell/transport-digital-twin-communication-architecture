@@ -8,11 +8,11 @@ def consume(producerEP, consumerEP, topic, linger):
      consumer = KafkaConsumer(bootstrap_servers=consumerEP, value_deserializer=DECODING)
      consumer.subscribe(topics=topic)
 
+     print(topic[0], "server running...")
      for msg in consumer:  
-          print(msg.value)
           producer.send(TOPIC_LOOKUP[msg.topic], msg.value, partition=getPartition(msg))
 
 if __name__ == '__main__':
-     Process(target=consume, args=(BROKER_EP, ENTERPRISE_EP, ["enterprise_motorway_cameras"], 5000)).start() 
-     Process(target=consume, args=(BROKER_EP, ENTERPRISE_EP, ["enterprise_toll_bridge_cameras"], 5000)).start()
-     Process(target=consume, args=(BROKER_EP, ENTERPRISE_EP, ["enterprise_probe_vehicles"], 3000)).start()
+     Process(target=consume, args=(BROKER_EP, ENTERPRISE_EP, ["enterprise_motorway_cameras"], 0)).start() 
+     Process(target=consume, args=(BROKER_EP, ENTERPRISE_EP, ["enterprise_toll_bridge_cameras"], 0)).start()
+     Process(target=consume, args=(BROKER_EP, ENTERPRISE_EP, ["enterprise_probe_vehicles"], 0)).start()

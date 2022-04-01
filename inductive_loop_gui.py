@@ -6,15 +6,22 @@ def lightLogic(FILE_PATH, LANES, t):
     with open(FILE_PATH, 'r', encoding='utf8') as f:
         last_line = json.loads(f.readlines()[-1].replace("'", "\""))   
         if last_line['timestamp'] != t:
-            lightsOff(LANES)
+            lanes = [False,False,False,False]
             if last_line['lane 1'] != '0':
                 lightOn(LANES[0])
+                lanes[0] = True
             if last_line['lane 2'] != '0':
                 lightOn(LANES[1])
+                lanes[1] = True
             if last_line['lane 3'] != '0':
                 lightOn(LANES[2])
+                lanes[2] = True
             if last_line['lane 4'] != '0':
-                lightOn(LANES[3])    
+                lightOn(LANES[3])  
+                lanes[3] = True
+            for i in range(len(lanes)):
+                if lanes[i] is False:
+                    lightsOff([LANES[i]]) 
             return last_line['timestamp']
             
 if __name__ == '__main__':

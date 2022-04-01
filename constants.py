@@ -1,9 +1,14 @@
 import json, pathlib
 
 #KAFKA
-PORT = '9092'
-BROKER_EP = '54.216.122.167:'+PORT 
-ENTERPRISE_EP = '3.249.12.140:'+PORT
+PORT1 = ':9092'
+PORT2 = ':9093'
+
+BROKER_IP = 'localhost'
+ENTERPRISE_IP = 'localhost'
+
+BROKER_EP = BROKER_IP+PORT1
+ENTERPRISE_EP = ENTERPRISE_IP+PORT2
 
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
 DECODING = (lambda v: json.loads(v))
@@ -18,6 +23,8 @@ M50_SOUTHBOUND_PATH = r'consumed_topics\inductive_loops\1.txt'
 SB_PARTITION = int(1)
 
 #SUMO
+SIMULATION_DURATION = 0 + 3600 #total time = 0:86400
+
 pathToConfigs = '\ITSC2020_CAV_impact\ITSC2020_CAV_impact\workspace'
 currentPath = str(pathlib.Path().resolve())
 sumoBinary = "sumo-gui"

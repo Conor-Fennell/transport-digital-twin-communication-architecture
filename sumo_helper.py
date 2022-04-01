@@ -12,7 +12,7 @@ def addGeoDistanceNoise(coordinates):
     w = r * math.sqrt(random.uniform(0, 1))
     t = 2 * math.pi * (random.uniform(0, 1))
     x = w * math.cos(t) 
-    lon_e = x/math.cos(lat)
+    lon_e = x/math.cos(lat) 
     lat_e = w * math.sin(t)
     return lon+lon_e, lat+lat_e
 
