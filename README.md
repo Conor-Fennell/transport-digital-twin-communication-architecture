@@ -6,69 +6,22 @@ Author: Conor Fennell
 
 Academic Supervisor: Prof Vinny Cahill
 
-----------------------------------------------
-3 tests
+#----------------------------------------------------------------------
 
-test 1
-start time: 0
-end time: 3600
+## Abstract ##
 
-test 2
-start time: 32400
-end time: 36000
+A digital twin is a virtual representation of a system which is updated from real-time data, providing accurate information about the current state of the system and allows for predictions on future states of the system. 
 
-test 3
-start time: 50400
-end time: 54000
----------------------------------------------
-SCENARIO-A
-brokers:  single broker, Linux/UNIX t2.large, replication 1 (default)
-enterprise server: Linux/UNIX t2.large, replication 1 (default)
-producer/consumers: local machine WINDOWS 10, i5-9600k @ 3.70GHZ, 32GB RAM
-kafka partitions:
-    topics = appendTopics(topics, 2, "inductive_loops")
-    topics = appendTopics(topics, 8, "motorway_cameras")
-    topics = appendTopics(topics, 1, "toll_bridge_cameras")
-    topics = appendTopics(topics, 1, "probe_vehicles")  
+Motorway traffic has been growing year on year with the ever increasing people and vehicle population. With this growth comes the risk of increased congestion, traffic accidents, and roadworks. These issues could be reduced with real-time traffic monitoring. A method of real-time traffic monitoring could be possible with a digital twin of the motorway. 
 
-    for topic in ENTERPRISE_TOPICS:
-        enterprise_topics = appendTopics(enterprise_topics, 1, topic)    
----------------------------------------------
-SCENARIO-B
-brokers:  single broker, Linux/UNIX t2.large, replication 1 (default)
-enterprise server: Linux/UNIX t2.large, replication 1 (default)
-producer/consumers: local machine WINDOWS 10, i5-9600k @ 3.70GHZ, 32GB RAM
-kafka partitions:
-    topics = appendTopics(topics, 2, "inductive_loops")
-    topics = appendTopics(topics, 8, "motorway_cameras")
-    topics = appendTopics(topics, 1, "toll_bridge_cameras")
-    topics = appendTopics(topics, 5, "probe_vehicles")  
+In order to create a digital twin, traffic data from the motorway is needed. This data must be real time and readily available. Several sensors exist on modern motorways such as inductive loops, road gantry cameras, and radar detectors. Others data sources can be found directly on vehicles such as GPS devices. The data from these sensors can be used to feed the digital twin. 
 
----------------------------------------------
-SCENARIO-C
-brokers:  single broker, Linux/UNIX t2.large, replication 1 (default)
-enterprise server: Linux/UNIX t2.large, replication 1 (default)
-producer/consumers: local machine WINDOWS 10, i5-9600k @ 3.70GHZ, 32GB RAM
-kafka partitions:
-    topics = appendTopics(topics, 2, "inductive_loops")
-    topics = appendTopics(topics, 8, "motorway_cameras")
-    topics = appendTopics(topics, 1, "toll_bridge_cameras")
-    topics = appendTopics(topics, 1, "probe_vehicles")  
+Apache Kafka is a distributed messaging service which is based on a publisher-subscriber architecture. In Apache Kafka data can be partitioned into 'partitions' which are within different 'topics'. 
 
-        Increased linger ms from 0 to 1000 on enterprise server producerss & loop producers
----------------------------------------------
+This research explores the use of Apache Kafka as the communication service between the motorway sensors and the digital twin. The objective is to create a highly available system which can provide high throughput and low latency. The proposed system implements topics per sensor group and partitioning per individual sensor. The research also explores the properties of the motorway sensors, focusing on the type of data they produce and the associated latency.
 
+The proposed Apache Kafka data delivery architecture is evaluated using simulated data streams. These simulated data streams are taken from virtual sensors which draw data from a SUMO (Simulation of Urban Mobility) simulation of the M50 motorway in Dublin. 
 
-  EnterpriseBroker:
-    image: 'bitnami/kafka:latest'
-    container_name: 'EnterpriseBroker'
-    ports:
-      - '9093:9093'
-    environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_LISTENERS=PLAINTEXT://:9093
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9093
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-    depends_on:
-      - zookeeper
+This report evaluates the simulations conducted. It was found that single broker designs offer the highest performance in terms of latency, however these systems have a single point of failure. It was found that compression can decrease the latency by approximately 7\%. Compression also increases the throughput of the system by 40\%. The use of multiple consumers also improves the throughput of the system by a further 21\%.
+
+The final solution is a 3 broker configuration. This systems uses compression to decrease the latency of the system. The system has replication across the brokers in order to increase the availability of the service. The final solution has a dedicated consumer per topic. This system experiences approximately 200 ms of latency in low traffic simulations, and 275 ms latency in high traffic simulations. 

@@ -1,4 +1,5 @@
 import os, sys, traci, datetime, random, math
+import numpy as np
 from constants import CAMERA_LOOKUP, TOLL_BRIDGE, autonomousVehicles
 
 def addDistanceNoise(p1, p2):
@@ -61,7 +62,6 @@ def getVehiclesInView(vehicleIDs, cam, r, dir):
         x, y = traci.vehicle.getPosition(vehID)
         p2 = [x, y]
         if (dir == 'N' and p2[1] > p1[1]) or (dir == 'S' and p2[1] < p1[1]): 
-        #crude way of checking if in cameras field of view, change this to distance on road with respect to camera
             if calcDistance(p1, p2) < r and getDirection(vehID, cam):   
                 vehicles.append(vehID)
     return vehicles
@@ -103,6 +103,9 @@ def getLoopLaneCounts(loopID):
         counts.append(traci.inductionloop.getLastStepVehicleNumber(loopID[i]))
     return counts
 
+def appendLoopCount(loopID, currentCount):
+    return np.add(currentCount, getLoopLaneCounts(loopID))
+
 def getProbeVehicleIDs(IDsOfVehicles):
     probes = []
     for vehID in IDsOfVehicles:      
@@ -115,7 +118,7 @@ def getProbeData(vehID, timestamp):
         'probe_id': str(vehID),
         'location': str(addGeoDistanceNoise(getVehicleLocationGeo(vehID))),
         'speed': str(round(addSpeedNoise(mpsToKph(traci.vehicle.getSpeed(vehID))), 2)),
-        'vehcile type': traci.vehicle.getTypeID(vehID),
+        'vehicle type': traci.vehicle.getTypeID(vehID),
         'timestamp': str(timestamp)
     }
     return data

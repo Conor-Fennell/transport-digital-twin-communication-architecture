@@ -1,13 +1,20 @@
 import json, pathlib
 
 #KAFKA
+KAFKA_VERSION = (2,5,0)
+
 PORT1 = ':9092'
 PORT2 = ':9093'
-
-BROKER_IP = 'localhost'
+BROKER1_IP = 'localhost'
 ENTERPRISE_IP = 'localhost'
 
-BROKER_EP = BROKER_IP+PORT1
+#For multiple broker set up
+# BROKER2_IP = '' 
+# BROKER3_IP = '' 
+# PORT3 = ':9094'
+# BROKER_EP = [BROKER1_IP+PORT1,BROKER2_IP+PORT2,BROKER3_IP+PORT3]
+
+BROKER_EP = [BROKER1_IP] #single broker setup
 ENTERPRISE_EP = ENTERPRISE_IP+PORT2
 
 ENCODING = (lambda v: json.dumps(v).encode('utf-8'))
@@ -23,7 +30,7 @@ M50_SOUTHBOUND_PATH = r'consumed_topics\inductive_loops\1.txt'
 SB_PARTITION = int(1)
 
 #SUMO
-SIMULATION_DURATION = 0 + 3600 #total time = 0:86400
+SIMULATION_DURATION = 0 + 3600 #3600 seconds = 1 hour
 
 pathToConfigs = '\ITSC2020_CAV_impact\ITSC2020_CAV_impact\workspace'
 currentPath = str(pathlib.Path().resolve())

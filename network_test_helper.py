@@ -1,4 +1,4 @@
-from constants import BROKER_IP, ENTERPRISE_IP
+from constants import BROKER1_IP, ENTERPRISE_IP
 from pythonping import ping
 from datetime import datetime
 import file_tools as file
@@ -18,7 +18,7 @@ def ping_host(host):
 
 def run_ping_tests(): 
     while True:
-        file.writePingToFile('Digital Twin Broker', ping_host(BROKER_IP))
+        file.writePingToFile('Digital Twin Broker', ping_host(BROKER1_IP))
         file.writePingToFile('Enterprise Broker', ping_host(ENTERPRISE_IP))
         print("\n")
         time.sleep(60)
