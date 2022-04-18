@@ -6,7 +6,6 @@ Author: Conor Fennell
 
 Academic Supervisor: Prof Vinny Cahill
 
-#----------------------------------------------------------------------
 
 ## Dependancies ##
 
@@ -23,7 +22,6 @@ https://github.com/Conor-Fennell/transport-digital-twin-communication-architectu
 
 To run the project locally, docker-compose must be installed to run the local Kafka brokers: https://docs.docker.com/compose/install/
 
-#----------------------------------------------------------------------
 
 ## Running the simulations ##
 
@@ -38,8 +36,6 @@ These brokers may be running locally or remotely.
 * Run 'enterprise_server.py' and 'digital_twin_proxy.py'
 * Begin the simulation, the data stream will begin and the consumed data will be written to a local directory named 'consumed_topics'
 
-
-#----------------------------------------------------------------------
 
 ## Abstract ##
 
