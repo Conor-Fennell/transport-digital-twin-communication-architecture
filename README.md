@@ -8,6 +8,39 @@ Academic Supervisor: Prof Vinny Cahill
 
 #----------------------------------------------------------------------
 
+## Dependancies ##
+
+This project requires SUMO, a microscophic traffic simulator: https://www.eclipse.org/sumo/
+
+This project also requires the configuration files for the M50 SUMO simulation created as part of a paper by Maxime Gueriau and Ivana Dusparic titled 'Quantifying the impact of connected and autonomous vehicles on traffic efficiency and safety in mixed traffic'
+
+Paper: https://ieeexplore.ieee.org/document/9294174
+Github: https://github.com/maxime-gueriau/ITSC2020_CAV_impact
+
+*Note: The file path of the simulation source in may need to be edited to run the simulation depending on the specific configuration files downloaded:*
+
+https://github.com/Conor-Fennell/transport-digital-twin-communication-architecture/blob/804f846e3cef1994f1b92d434f7c05822cc029a6/constants.py#L35
+
+To run the project locally, docker-compose must be installed to run the local Kafka brokers: https://docs.docker.com/compose/install/
+
+#----------------------------------------------------------------------
+
+## Running the simulations ##
+
+The Kafka brokers must be specified here: 
+
+https://github.com/Conor-Fennell/transport-digital-twin-communication-architecture/blob/804f846e3cef1994f1b92d434f7c05822cc029a6/constants.py#L6-L18
+
+These brokers may be running locally or remotely.
+
+* Run 'simulation.py'
+* Wait for the simulation configurations to load
+* Run 'enterprise_server.py' and 'digital_twin_proxy.py'
+* Begin the simulation, the data stream will begin and the consumed data will be written to a local directory named 'consumed_topics'
+
+
+#----------------------------------------------------------------------
+
 ## Abstract ##
 
 A digital twin is a virtual representation of a system which is updated from real-time data, providing accurate information about the current state of the system and allows for predictions on future states of the system. 
