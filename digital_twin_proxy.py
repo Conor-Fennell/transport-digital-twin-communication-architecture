@@ -9,8 +9,9 @@ def consume(EP, TOPIC):
      consumer.subscribe(topics=TOPIC)
      print(TOPIC[0], "consumer is running...")
      for msg in consumer:  
-          latency = (time.time() - float(msg.value['sent_timestamp']))*1000    
-          file.writeLatencyToFile(msg.topic, latency)
+          # Used for latency calculations 
+          # latency = (time.time() - float(msg.value['sent_timestamp']))*1000    
+          # file.writeLatencyToFile(msg.topic, latency)
           file.writeMessageToFile(msg.partition, msg.topic, msg.value)
 
 if __name__ == '__main__':

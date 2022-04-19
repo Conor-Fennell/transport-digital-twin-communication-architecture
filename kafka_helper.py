@@ -96,5 +96,5 @@ def sendTollData(vehicleIDs, producer, timestamp, topic):
         sendData(data, producer, topic, None)
 
 def sendData(data, producer, topic, partition):
-    data['sent_timestamp'] = time.time()
+    # data['sent_timestamp'] = time.time() # only used for latency calculations
     producer.send(topic=topic, value=data, partition=partition)
